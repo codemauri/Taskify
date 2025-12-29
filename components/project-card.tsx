@@ -20,8 +20,8 @@ export function ProjectCard({ project }: ProjectCardProps) {
   };
 
   return (
-    <Link href={`/projects/${project.id}`} className="block">
-      <Card className="hover:shadow-lg transition-shadow cursor-pointer">
+    <Link href={`/projects/${project.id}`} className="block h-full">
+      <Card className="hover:shadow-lg transition-shadow cursor-pointer h-full flex flex-col">
         <CardHeader>
           <div className="flex items-start justify-between">
             <div className="space-y-1">
@@ -35,7 +35,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
             </Badge>
           </div>
         </CardHeader>
-        <CardContent>
+        <CardContent className="mt-auto">
           <div className="flex gap-4 text-sm text-muted-foreground">
             <div className="flex items-center gap-1">
               <Calendar className="h-4 w-4" />

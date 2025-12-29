@@ -1,45 +1,29 @@
 import { prismaClient } from "../lib/db";
-import { hash } from "bcryptjs";
+import { auth } from "../lib/auth";
 
 async function main() {
-  // Create demo user with hashed password
-  const hashedPassword = await hash("password123", 10);
-  
-  // First, create or update the user
-  const user = await prismaClient.user.upsert({
-    where: { email: "demo@taskify.com" },
-    update: {},
-    create: {
-      id: "demo-user-id",
+  // Create demo user using better-auth's API (handles password hashing correctly)
+  const signUpResult = await auth.api.signUpEmail({
+    body: {
       email: "demo@taskify.com",
+      password: "password123",
       name: "Demo User",
-      emailVerified: true,
     },
   });
 
-  console.log("Created user:", user);
+  if (!signUpResult) {
+    throw new Error("Failed to create user");
+  }
 
-  // Create the account with password
-  await prismaClient.account.upsert({
-    where: { id: `${user.id}_credential` },
-    update: {},
-    create: {
-      id: `${user.id}_credential`,
-      accountId: "credential",
-      providerId: "credential",
-      userId: user.id,
-      password: hashedPassword,
-    },
-  });
-
-  console.log("Created account with password for:", user.email);
+  const userId = signUpResult.user.id;
+  console.log("Created user:", signUpResult.user);
 
   // Create demo projects with tasks
   const project1 = await prismaClient.project.create({
     data: {
       title: "Website Redesign",
       description: "Complete overhaul of company website with modern design",
-      userId: user.id,
+      userId: userId,
       tasks: {
         create: [
           {
@@ -66,7 +50,7 @@ async function main() {
     data: {
       title: "Mobile App Development",
       description: "Build cross-platform mobile application using React Native",
-      userId: user.id,
+      userId: userId,
       tasks: {
         create: [
           {
@@ -98,7 +82,7 @@ async function main() {
     data: {
       title: "Documentation Update",
       description: "Update all technical documentation for Q4",
-      userId: user.id,
+      userId: userId,
       tasks: {
         create: [
           {
