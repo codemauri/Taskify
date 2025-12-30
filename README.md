@@ -24,7 +24,7 @@ A modern project and task management application built with Next.js, Prisma, and
 
 ### Prerequisites
 
-- Node.js 20.x or higher
+- Node.js 20.19 or higher
 - npm, yarn, pnpm, or bun
 
 ### Installation
