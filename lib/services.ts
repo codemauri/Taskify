@@ -1,5 +1,6 @@
 import { prismaClient } from "./db";
 import { Prisma } from "@prisma/client";
+import { removeUndefinedProperties } from "./utils";
 
 export type Project = {
   id: string;
@@ -22,32 +23,44 @@ export type Task = {
 
 export type ProjectWithTasks = Project & {
   tasks: Task[];
-  taskCount?: number;
 };
 
+export type ProjectWithTaskCount = Project & {
+  _count: {
+    tasks: number;
+  };
+}
+
 // Project operations
-export async function getAllProjects(userId: string): Promise<ProjectWithTasks[]> {
-  const projects = await prismaClient.$queryRaw<ProjectWithTasks[]>`
-    SELECT 
-      p.*,
-      COUNT(t.id) as taskCount
-    FROM Project p
-    LEFT JOIN Task t ON t.projectId = p.id
-    WHERE p.userId = ${userId}
-    GROUP BY p.id
-    ORDER BY p.updatedAt DESC
-  `;
+export async function getAllProjects(userId: string): Promise<ProjectWithTaskCount[]> {
+  const projects = await prismaClient.project.findMany({
+    where: { userId },
+    orderBy: { updatedAt: "desc" },
+    select: {
+      id: true,
+      title: true,
+      description: true,
+      createdAt: true,
+      updatedAt: true,
+      userId: true,
+      _count: {
+        select: { tasks: true }
+      }
+    }
+  })
   
   return projects;
 }
 
 export async function getProjectById(projectId: string): Promise<ProjectWithTasks | null> {
-  const projects = await prismaClient.$queryRaw<Project[]>`
-    SELECT * FROM Project WHERE id = ${projectId}
-  `;
+  const project = await prismaClient.project.findUnique({
+    where: { id: projectId },
+  })
   
-  if (projects.length === 0) return null;
+  if (!project) return null;
   
+  // raw sql for this part because prisma doesn't support custom, case statement
+  // could do this in JS, but it's most efficient to do it at the database level
   const tasks = await prismaClient.$queryRaw<Task[]>`
     SELECT * FROM Task WHERE projectId = ${projectId}
     ORDER BY 
@@ -61,9 +74,10 @@ export async function getProjectById(projectId: string): Promise<ProjectWithTask
   `;
   
   return {
-    ...projects[0],
+    ...project,
     tasks,
   };
+
 }
 
 export async function createProject(data: {
@@ -71,19 +85,10 @@ export async function createProject(data: {
   description?: string;
   userId: string;
 }): Promise<Project> {
-  const id = crypto.randomUUID();
-  const now = new Date().toISOString();
-  
-  await prismaClient.$executeRaw`
-    INSERT INTO Project (id, title, description, userId, createdAt, updatedAt)
-    VALUES (${id}, ${data.title}, ${data.description || null}, ${data.userId}, ${now}, ${now})
-  `;
-  
-  const projects = await prismaClient.$queryRaw<Project[]>`
-    SELECT * FROM Project WHERE id = ${id}
-  `;
-  
-  return projects[0];
+  const newProject = await prismaClient.project.create({
+    data
+  })
+  return newProject;
 }
 
 export async function updateProject(
@@ -91,42 +96,23 @@ export async function updateProject(
   data: { title?: string; description?: string }
 ): Promise<Project> {
   const now = new Date().toISOString();
+
+  const projectDataToUpdate = removeUndefinedProperties(data);
   
-  const updates: string[] = [];
-  const params: unknown[] = [];
-  
-  if (data.title !== undefined) {
-    updates.push(`title = ?`);
-    params.push(data.title);
-  }
-  
-  if (data.description !== undefined) {
-    updates.push(`description = ?`);
-    params.push(data.description);
-  }
-  
-  updates.push(`updatedAt = ?`);
-  params.push(now);
-  
-  params.push(projectId);
-  
-  const query = Prisma.sql([
-    `UPDATE Project SET ${updates.join(", ")} WHERE id = ?`,
-  ], ...params);
-  
-  await prismaClient.$executeRaw(query);
-  
-  const projects = await prismaClient.$queryRaw<Project[]>`
-    SELECT * FROM Project WHERE id = ${projectId}
-  `;
-  
-  return projects[0];
+  const updatedProject = await prismaClient.project.update({
+    where: { id: projectId },
+    data: {
+      ...projectDataToUpdate,
+      updatedAt: new Date(now),
+    }
+  })
+  return updatedProject;
 }
 
 export async function deleteProject(projectId: string): Promise<void> {
-  await prismaClient.$executeRaw`
-    DELETE FROM Project WHERE id = ${projectId}
-  `;
+  await prismaClient.project.delete({
+    where: { id: projectId }
+  })
 }
 
 // Task operations
@@ -173,25 +159,10 @@ export async function createTask(data: {
   status?: string;
   projectId: string;
 }): Promise<Task> {
-  const id = crypto.randomUUID();
-  const now = new Date().toISOString();
-  const status = data.status || "Incomplete";
-  
-  await prismaClient.$executeRaw`
-    INSERT INTO Task (id, title, description, status, projectId, createdAt, updatedAt)
-    VALUES (${id}, ${data.title}, ${data.description || null}, ${status}, ${data.projectId}, ${now}, ${now})
-  `;
-  
-  // Also update the project's updatedAt
-  await prismaClient.$executeRaw`
-    UPDATE Project SET updatedAt = ${now} WHERE id = ${data.projectId}
-  `;
-  
-  const tasks = await prismaClient.$queryRaw<Task[]>`
-    SELECT * FROM Task WHERE id = ${id}
-  `;
-  
-  return tasks[0];
+  const newTask = await prismaClient.task.create({
+    data
+  })
+  return newTask;
 }
 
 export async function updateTask(
@@ -199,73 +170,22 @@ export async function updateTask(
   data: { title?: string; description?: string; status?: string }
 ): Promise<Task> {
   const now = new Date().toISOString();
-  
-  // Get the task first to get projectId
-  const existingTasks = await prismaClient.$queryRaw<Task[]>`
-    SELECT * FROM Task WHERE id = ${taskId}
-  `;
-  
-  if (existingTasks.length === 0) {
-    throw new Error("Task not found");
+  // remove undefined values
+  const taskDataToUpdate = removeUndefinedProperties(data);
+
+ const updatedTask = await prismaClient.task.update({
+  where: { id: taskId },
+  data: {
+    ...taskDataToUpdate,
+    updatedAt: new Date(now),
   }
-  
-  const updates: string[] = [];
-  const params: unknown[] = [];
-  
-  if (data.title !== undefined) {
-    updates.push(`title = ?`);
-    params.push(data.title);
-  }
-  
-  if (data.description !== undefined) {
-    updates.push(`description = ?`);
-    params.push(data.description);
-  }
-  
-  if (data.status !== undefined) {
-    updates.push(`status = ?`);
-    params.push(data.status);
-  }
-  
-  updates.push(`updatedAt = ?`);
-  params.push(now);
-  
-  params.push(taskId);
-  
-  const query = Prisma.sql([
-    `UPDATE Task SET ${updates.join(", ")} WHERE id = ?`,
-  ], ...params);
-  
-  await prismaClient.$executeRaw(query);
-  
-  // Update project's updatedAt
-  await prismaClient.$executeRaw`
-    UPDATE Project SET updatedAt = ${now} WHERE id = ${existingTasks[0].projectId}
-  `;
-  
-  const tasks = await prismaClient.$queryRaw<Task[]>`
-    SELECT * FROM Task WHERE id = ${taskId}
-  `;
-  
-  return tasks[0];
+ })
+
+ return updatedTask;
 }
 
 export async function deleteTask(taskId: string): Promise<void> {
-  // Get the task first to get projectId
-  const tasks = await prismaClient.$queryRaw<Task[]>`
-    SELECT * FROM Task WHERE id = ${taskId}
-  `;
-  
-  if (tasks.length > 0) {
-    const now = new Date().toISOString();
-    
-    await prismaClient.$executeRaw`
-      DELETE FROM Task WHERE id = ${taskId}
-    `;
-    
-    // Update project's updatedAt
-    await prismaClient.$executeRaw`
-      UPDATE Project SET updatedAt = ${now} WHERE id = ${tasks[0].projectId}
-    `;
-  }
+  await prismaClient.task.delete({
+    where: { id: taskId }
+  });
 }

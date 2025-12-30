@@ -3,11 +3,11 @@
 import Link from "next/link";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ProjectWithTasks } from "@/lib/services";
+import { ProjectWithTaskCount } from "@/lib/services";
 import { Calendar, Clock } from "lucide-react";
 
 interface ProjectCardProps {
-  project: ProjectWithTasks;
+  project: ProjectWithTaskCount;
 }
 
 export function ProjectCard({ project }: ProjectCardProps) {
@@ -31,7 +31,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
               </CardDescription>
             </div>
             <Badge variant="secondary">
-              {project.taskCount || 0} {project.taskCount === 1 ? "task" : "tasks"}
+              {project._count?.tasks || 0} {project._count?.tasks === 1 ? "task" : "tasks"}
             </Badge>
           </div>
         </CardHeader>
