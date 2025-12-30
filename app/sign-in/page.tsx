@@ -52,11 +52,11 @@ export default function SignInPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background px-4">
+    <div className="min-h-screen flex items-center justify-center px-4">
       <Card className="w-full max-w-md">
         <CardHeader className="space-y-1">
-          <CardTitle className="text-3xl font-bold text-center">Taskify</CardTitle>
-          <CardDescription className="text-center">
+          <CardTitle className="font-bold">Taskify</CardTitle>
+          <CardDescription className="">
             Sign in to manage your projects and tasks
           </CardDescription>
         </CardHeader>
@@ -87,17 +87,17 @@ export default function SignInPage() {
               />
             </div>
             {error && (
-              <div className="rounded-md bg-red-50 dark:bg-red-950 p-3 border border-red-200 dark:border-red-800">
-                <p className="text-sm text-red-600 dark:text-red-400">{error}</p>
+              <div className="rounded-md p-3">
+                <p className="">{error}</p>
               </div>
             )}
             <Button type="submit" className="w-full" disabled={isLoading}>
               {isLoading ? "Signing in..." : "Sign In"}
             </Button>
           </form>
-          <div className="mt-4 text-center text-sm">
+          <div className="mt-4">
             Don&apos;t have an account?{" "}
-            <Link href="/sign-up" className="text-primary hover:underline">
+            <Link href="/sign-up" className="hover:underline">
               Sign up
             </Link>
           </div>

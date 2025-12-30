@@ -14,7 +14,7 @@
     "db:studio": "prisma studio",
     "db:generate": "prisma generate",
     "db:init": "prisma migrate dev --name init && npm run db:generate",
-    "db:rm-migrations": "rimraf prisma/migrations",
+    "db:rm-migrations": "rimraf prisma/migrations && rimraf prisma/dev.db",
     "db:reset": "run-s db:rm-migrations db:init",
     "db:seed": "tsx prisma/seed.ts",
     "db:reset-seed": "run-s db:reset db:seed"

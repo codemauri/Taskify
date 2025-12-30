@@ -26,7 +26,7 @@ export function TaskFilter({ tasks }: TaskFilterProps) {
   return (
     <div className="space-y-4">
       <div className="flex items-center gap-2">
-        <label className="text-sm font-medium">Filter by status:</label>
+        <label className="font-medium">Filter by status:</label>
         <Select value={statusFilter} onValueChange={setStatusFilter}>
           <SelectTrigger className="w-[200px]">
             <SelectValue />

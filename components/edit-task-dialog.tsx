@@ -83,7 +83,7 @@ export function EditTaskDialog({ task }: EditTaskDialogProps) {
           </DialogHeader>
           <div className="grid gap-4 py-4">
             <div className="grid gap-2">
-              <label htmlFor="title" className="text-sm font-medium">
+              <label htmlFor="title" className="font-medium">
                 Title
               </label>
               <Input
@@ -95,7 +95,7 @@ export function EditTaskDialog({ task }: EditTaskDialogProps) {
               />
             </div>
             <div className="grid gap-2">
-              <label htmlFor="description" className="text-sm font-medium">
+              <label htmlFor="description" className="font-medium">
                 Description
               </label>
               <Textarea
@@ -107,7 +107,7 @@ export function EditTaskDialog({ task }: EditTaskDialogProps) {
               />
             </div>
             <div className="grid gap-2">
-              <label htmlFor="status" className="text-sm font-medium">
+              <label htmlFor="status" className="font-medium">
                 Status
               </label>
               <Select value={status} onValueChange={setStatus}>

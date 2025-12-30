@@ -18,10 +18,10 @@ export function Header() {
   if (!session) return null;
 
   return (
-    <header className="border-b">
+    <header className="">
       <div className="container mx-auto px-4 py-4 flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <h2 className="text-lg font-semibold">Welcome, {session.user.name || session.user.email}</h2>
+          <h2 className="font-semibold">Welcome, {session.user.name || session.user.email}</h2>
         </div>
         <Button variant="outline" size="sm" onClick={handleSignOut}>
           <LogOut className="mr-2 h-4 w-4" />

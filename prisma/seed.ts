@@ -1,40 +1,45 @@
-import { prismaClient } from "@/lib/db";
-
-
+import { prismaClient } from "../lib/db";
+import { auth } from "../lib/auth";
 
 async function main() {
-
-  // Create demo user
-  const userOne = await prismaClient.user.upsert({
-    where: { id: "demo-user-john-doe" },
-    update: {},
-    create: {
-      id: "demo-user-john-doe",
+  // Create demo user using better-auth's API (handles password hashing correctly)
+  const signUpJohnDoeResult = await auth.api.signUpEmail({
+    body: {
       email: "john.doe@taskify.com",
+      password: "password123",
       name: "John Doe",
     },
   });
 
-  console.log(`Demo user (${userOne.name}) created`, userOne);
+  if (!signUpJohnDoeResult) {
+    throw new Error("Failed to create user");
+  }
 
-  const userTwo = await prismaClient.user.upsert({
-    where: { id: "demo-user-jane-doe" },
-    update: {},
-    create: {
-      id: "demo-user-jane-doe",
+  const johnDoeUserId = signUpJohnDoeResult.user.id;
+  console.log("Created user:", signUpJohnDoeResult.user);
+
+    // Create demo user using better-auth's API (handles password hashing correctly)
+  const signUpJaneDoeResult = await auth.api.signUpEmail({
+    body: {
       email: "jane.doe@taskify.com",
+      password: "password123",
       name: "Jane Doe",
     },
   });
 
-  console.log(`Demo user (${userTwo.name}) created`, userTwo);
+  if (!signUpJaneDoeResult) {
+    throw new Error("Failed to create user");
+  }
+
+  const janeDoeUserId = signUpJaneDoeResult.user.id;
+  console.log("Created user:", signUpJaneDoeResult.user);
 
   // Create demo projects with tasks
   const project1 = await prismaClient.project.create({
     data: {
       title: "Website Redesign",
       description: "Complete overhaul of company website with modern design",
-      userId: userOne.id,
+      userId: janeDoeUserId,
       tasks: {
         create: [
           {
@@ -61,7 +66,7 @@ async function main() {
     data: {
       title: "Mobile App Development",
       description: "Build cross-platform mobile application using React Native",
-      userId: userOne.id,
+      userId: johnDoeUserId,
       tasks: {
         create: [
           {
@@ -93,7 +98,7 @@ async function main() {
     data: {
       title: "Documentation Update",
       description: "Update all technical documentation for Q4",
-      userId: userTwo.id,
+      userId: johnDoeUserId,
       tasks: {
         create: [
           {
@@ -112,6 +117,12 @@ async function main() {
   });
 
   console.log("Created projects:", { project1, project2, project3 });
+  console.log("\n✅ Database seeded successfully!");
+  console.log("\nDemo credentials:");
+  console.log("Email: john.doe@taskify.com");
+  console.log("Password: password123");
+  console.log("Email: jane.doe@taskify.com");
+  console.log("Password: password123");
 }
 
 main()

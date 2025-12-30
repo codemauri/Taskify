@@ -34,7 +34,6 @@ export function CreateProjectDialog({ userId }: CreateProjectDialogProps) {
     try {
       await createProjectAction(formData);
       setOpen(false);
-      e.currentTarget.reset();
     } catch (error) {
       console.error("Failed to create project:", error);
     } finally {
@@ -60,7 +59,7 @@ export function CreateProjectDialog({ userId }: CreateProjectDialogProps) {
           </DialogHeader>
           <div className="grid gap-4 py-4">
             <div className="grid gap-2">
-              <label htmlFor="title" className="text-sm font-medium">
+              <label htmlFor="title" className="font-medium">
                 Title
               </label>
               <Input
@@ -71,7 +70,7 @@ export function CreateProjectDialog({ userId }: CreateProjectDialogProps) {
               />
             </div>
             <div className="grid gap-2">
-              <label htmlFor="description" className="text-sm font-medium">
+              <label htmlFor="description" className="font-medium">
                 Description
               </label>
               <Textarea

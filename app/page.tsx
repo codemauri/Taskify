@@ -3,22 +3,22 @@ import { CreateProjectDialog } from "@/components/create-project-dialog";
 import { ProjectCard } from "@/components/project-card";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
-import { redirect } from "next/navigation";
 
 export default async function Home() {
   const session = await auth.api.getSession({
     headers: await headers(),
   });
 
+  // Proxy handles auth redirect, so session should exist
   if (!session) {
-    redirect("/sign-in");
+    return null;
   }
 
   const userId = session.user.id;
   const projects = await getAllProjects(userId);
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen">
       <div className="container mx-auto py-8 px-4">
         <div className="flex items-center justify-between mb-8">
           <div>

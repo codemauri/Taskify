@@ -15,21 +15,21 @@ export function TaskList({ tasks }: TaskListProps) {
     switch (status) {
       case "In Progress":
         return (
-          <Badge className="bg-blue-500 hover:bg-blue-600">
+          <Badge>
             <CircleDot className="mr-1 h-3 w-3" />
             In Progress
           </Badge>
         );
       case "Incomplete":
         return (
-          <Badge className="bg-yellow-500 hover:bg-yellow-600">
+          <Badge>
             <Circle className="mr-1 h-3 w-3" />
             Incomplete
           </Badge>
         );
       case "Done":
         return (
-          <Badge className="bg-green-500 hover:bg-green-600">
+          <Badge>
             <CheckCircle2 className="mr-1 h-3 w-3" />
             Done
           </Badge>
@@ -41,7 +41,7 @@ export function TaskList({ tasks }: TaskListProps) {
 
   if (tasks.length === 0) {
     return (
-      <div className="text-center py-8 text-muted-foreground">
+      <div className="py-8">
         No tasks yet. Add your first task to get started!
       </div>
     );
@@ -54,9 +54,9 @@ export function TaskList({ tasks }: TaskListProps) {
           <CardHeader className="pb-3">
             <div className="flex items-start justify-between gap-4">
               <div className="flex-1 space-y-1">
-                <CardTitle className="text-lg">{task.title}</CardTitle>
-                {task.description && (
-                  <CardDescription className="text-sm">
+                  <CardTitle className="">{task.title}</CardTitle>
+                  {task.description && (
+                    <CardDescription className="">
                     {task.description}
                   </CardDescription>
                 )}

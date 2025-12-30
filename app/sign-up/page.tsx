@@ -53,11 +53,11 @@ export default function SignUpPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background px-4">
+    <div className="min-h-screen flex items-center justify-center px-4">
       <Card className="w-full max-w-md">
         <CardHeader className="space-y-1">
-          <CardTitle className="text-3xl font-bold text-center">Taskify</CardTitle>
-          <CardDescription className="text-center">
+          <CardTitle className="font-bold">Taskify</CardTitle>
+          <CardDescription className="">
             Create an account to get started
           </CardDescription>
         </CardHeader>
@@ -114,15 +114,15 @@ export default function SignUpPage() {
               />
             </div>
             {error && (
-              <div className="text-sm text-red-500 text-center">{error}</div>
+              <div className="">{error}</div>
             )}
             <Button type="submit" className="w-full" disabled={isLoading}>
               {isLoading ? "Creating account..." : "Create Account"}
             </Button>
           </form>
-          <div className="mt-4 text-center text-sm">
+          <div className="mt-4">
             Already have an account?{" "}
-            <Link href="/sign-in" className="text-primary hover:underline">
+            <Link href="/sign-in" className="hover:underline">
               Sign in
             </Link>
           </div>

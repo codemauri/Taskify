@@ -1,4 +1,4 @@
-import { notFound, redirect } from "next/navigation";
+import { notFound } from "next/navigation";
 import Link from "next/link";
 import { getProjectById } from "@/lib/services";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -18,8 +18,9 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
     headers: await headers(),
   });
 
+  // Proxy handles auth redirect, so session should exist
   if (!session) {
-    redirect("/sign-in");
+    return null;
   }
 
   const { id } = await params;
@@ -68,7 +69,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
             </div>
           </CardHeader>
           <CardContent>
-            <div className="flex gap-6 text-sm text-muted-foreground">
+            <div className="flex gap-6">
               <div className="flex items-center gap-2">
                 <Calendar className="h-4 w-4" />
                 <span>Created {formatDate(project.createdAt)}</span>
