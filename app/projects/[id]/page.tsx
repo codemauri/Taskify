@@ -62,7 +62,11 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
               <div className="space-y-2">
                 <CardTitle className="text-3xl">{project.title}</CardTitle>
                 <CardDescription className="text-base">
-                  {project.description || "No description provided"}
+                  {project.description ? (
+                    <span dangerouslySetInnerHTML={{ __html: project.description }} />
+                  ) : (
+                    "No description provided"
+                  )}
                 </CardDescription>
               </div>
               <EditProjectDialog project={project} />

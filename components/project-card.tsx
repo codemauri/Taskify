@@ -27,7 +27,11 @@ export function ProjectCard({ project }: ProjectCardProps) {
             <div className="space-y-1">
               <CardTitle>{project.title}</CardTitle>
               <CardDescription className="line-clamp-2">
-                {project.description || "No description"}
+                {project.description ? (
+                  <span dangerouslySetInnerHTML={{ __html: project.description }} />
+                ) : (
+                  "No description"
+                )}
               </CardDescription>
             </div>
             <Badge variant="secondary">

@@ -57,9 +57,9 @@ export function TaskList({ tasks }: TaskListProps) {
                   <CardTitle className="">{task.title}</CardTitle>
                   {task.description && (
                     <CardDescription className="">
-                    {task.description}
-                  </CardDescription>
-                )}
+                      <span dangerouslySetInnerHTML={{ __html: task.description }} />
+                    </CardDescription>
+                  )}
               </div>
               <div className="flex items-center gap-2">
                 {getStatusBadge(task.status.name)}
