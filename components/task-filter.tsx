@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { TaskStatus } from "@prisma/client";
-import { Task } from "@/lib/services";
+import { TaskWithStatus } from "@/lib/services";
 import { TaskList } from "@/components/task-list";
 import {
   Select,
@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/select";
 
 interface TaskFilterProps {
-  tasks: Task[];
+  tasks: TaskWithStatus[];
   taskStatuses: TaskStatus[];
 }
 

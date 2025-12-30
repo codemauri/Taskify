@@ -9,6 +9,7 @@ import {
   deleteTask,
   updateProject,
   getAllTaskStatuses,
+  searchProjects,
 } from "@/lib/services";
 import { revalidatePath } from "next/cache";
 
@@ -97,4 +98,8 @@ export async function updateTaskAction(taskId: string, formData: FormData) {
 export async function deleteTaskAction(taskId: string, projectId: string) {
   await deleteTask(taskId);
   revalidatePath(`/projects/${projectId}`);
+}
+
+export async function searchProjectsAction(userId: string, searchQuery: string) {
+  return await searchProjects(userId, searchQuery);
 }

@@ -1,6 +1,7 @@
 import { getAllProjects } from "@/lib/services";
 import { CreateProjectDialog } from "@/components/create-project-dialog";
 import { ProjectCard } from "@/components/project-card";
+import { ProjectSearch } from "@/components/project-search";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 
@@ -30,19 +31,27 @@ export default async function Home() {
           <CreateProjectDialog userId={userId} />
         </div>
 
-        {projects.length === 0 ? (
-          <div className="text-center py-12">
-            <p className="text-muted-foreground text-lg">
-              No projects yet. Create your first project to get started!
-            </p>
-          </div>
-        ) : (
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {projects.map((project) => (
-              <ProjectCard key={project.id} project={project} />
-            ))}
-          </div>
-        )}
+        <div className="mb-8">
+          <h2 className="text-2xl font-semibold mb-4">Search Projects</h2>
+          <ProjectSearch userId={userId} />
+        </div>
+
+        <div className="border-t pt-8 mt-8">
+          <h2 className="text-2xl font-semibold mb-6">All Projects</h2>
+          {projects.length === 0 ? (
+            <div className="text-center py-12">
+              <p className="text-muted-foreground text-lg">
+                No projects yet. Create your first project to get started!
+              </p>
+            </div>
+          ) : (
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {projects.map((project) => (
+                <ProjectCard key={project.id} project={project} />
+              ))}
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

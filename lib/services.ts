@@ -2,6 +2,17 @@ import { prismaClient } from "./db";
 import { TaskStatus } from "@prisma/client";
 import { removeUndefinedProperties } from "./utils";
 
+export async function searchProjects(userId: string, searchQuery: string): Promise<Project[]> {
+  const sql = `
+    SELECT id, title, description, createdAt, updatedAt, userId 
+    FROM Project 
+    WHERE userId = '${userId}' AND title LIKE '%${searchQuery}%'
+  `;
+  
+  const results = await prismaClient.$queryRawUnsafe(sql);
+  return results as Project[];
+}
+
 export type Project = {
   id: string;
   title: string;

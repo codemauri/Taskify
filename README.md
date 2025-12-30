@@ -32,7 +32,7 @@ A modern project and task management application built with Next.js, Prisma, and
 1. **Clone the repository:**
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/tek_innov8ers.git
+git clone https://github.com/kylerjohnsondev/tek_innov8ers.git
 cd tek_innov8ers
 ```
 
@@ -46,10 +46,10 @@ npm install
 Create a `.env` file in the root directory and add the following variables:
 
 ```env
-DATABASE_URL="file:./dev.db"
+DATABASE_URL="file:./prisma/dev.db"
 BETTER_AUTH_SECRET="your_better_auth_secret"
 ```
-Replace `your_better_auth_secret` with a secure random string. Or you can generate one using `npm run better-auth:secret`. This command will print a secure secret to the console, which you can copy and paste into your `.env` file.
+Run `npm run better-auth:secret` to generate a secure Better Auth secret to the console, which you can copy and paste into your `.env` file.
 
 4. **Set up the database:**
 
