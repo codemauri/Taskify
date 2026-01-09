@@ -17,7 +17,7 @@ import { PrismaClient } from "@prisma/client";
 // export default prisma;
 
 // if (process.env.NODE_ENV !== "production") globalThis.prisma = prisma;
-import "dotenv/config";
+//import "dotenv/config";
 import { PrismaBetterSqlite3 } from "@prisma/adapter-better-sqlite3";
 
 const connectionString = `${process.env.DATABASE_URL}`;
@@ -27,4 +27,3 @@ const prismaClient = new PrismaClient({ adapter });
 export {
   prismaClient
 }
-

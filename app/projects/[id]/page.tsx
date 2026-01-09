@@ -9,6 +9,7 @@ import { TaskFilter } from "@/components/task-filter";
 import { ArrowLeft, Calendar, Clock } from "lucide-react";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
+import DOMPurify from 'isomorphic-dompurify';
 
 interface ProjectPageProps {
   params: Promise<{ id: string }>;
@@ -26,7 +27,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
 
   const { id } = await params;
   const [project, taskStatuses] = await Promise.all([
-    getProjectById(id),
+    getProjectById(id, session.user.id),
     getAllTaskStatuses()
   ]);
 
@@ -63,7 +64,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
                 <CardTitle className="text-3xl">{project.title}</CardTitle>
                 <CardDescription className="text-base">
                   {project.description ? (
-                    <span dangerouslySetInnerHTML={{ __html: project.description }} />
+                    <span dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(project.description) }} />
                   ) : (
                     "No description provided"
                   )}

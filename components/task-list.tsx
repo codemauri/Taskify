@@ -5,6 +5,7 @@ import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/ca
 import { TaskWithStatus } from "@/lib/services";
 import { EditTaskDialog } from "./edit-task-dialog";
 import { Circle, CircleDot, CheckCircle2 } from "lucide-react";
+import DOMPurify from 'isomorphic-dompurify';
 
 interface TaskListProps {
   tasks: TaskWithStatus[];
@@ -41,8 +42,8 @@ export function TaskList({ tasks }: TaskListProps) {
 
   if (tasks.length === 0) {
     return (
-      <div className="py-8">
-        No tasks yet. Add your first task to get started!
+      <div className="py-8 text-muted-foreground">
+        No tasks to display.
       </div>
     );
   }
@@ -57,7 +58,7 @@ export function TaskList({ tasks }: TaskListProps) {
                   <CardTitle className="">{task.title}</CardTitle>
                   {task.description && (
                     <CardDescription className="">
-                      <span dangerouslySetInnerHTML={{ __html: task.description }} />
+                      <span dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(task.description) }} />
                     </CardDescription>
                   )}
               </div>

@@ -33,7 +33,7 @@ export default async function Home() {
 
         <div className="mb-8">
           <h2 className="text-2xl font-semibold mb-4">Search Projects</h2>
-          <ProjectSearch userId={userId} />
+          <ProjectSearch />
         </div>
 
         <div className="border-t pt-8 mt-8">

@@ -5,16 +5,12 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Search } from "lucide-react";
 import { ProjectCard } from "./project-card";
-import { Project } from "@/lib/services";
+import { ProjectWithTaskCount } from "@/lib/services";
 import { searchProjectsAction } from "@/app/actions";
 
-type ProjectSearchProps = {
-  userId: string;
-};
-
-export function ProjectSearch({ userId }: ProjectSearchProps) {
+export function ProjectSearch() {
   const [searchQuery, setSearchQuery] = useState("");
-  const [searchResults, setSearchResults] = useState<Project[]>([]);
+  const [searchResults, setSearchResults] = useState<ProjectWithTaskCount[]>([]);
   const [isSearching, setIsSearching] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -28,7 +24,7 @@ export function ProjectSearch({ userId }: ProjectSearchProps) {
     setError(null);
 
     try {
-      const results = await searchProjectsAction(userId, searchQuery);
+      const results = await searchProjectsAction(searchQuery);
       setSearchResults(results);
     } catch (err) {
       setError("An error occurred during search");
@@ -76,10 +72,7 @@ export function ProjectSearch({ userId }: ProjectSearchProps) {
             {searchResults.map((project) => (
               <ProjectCard
                 key={project.id}
-                project={{
-                  ...project,
-                  _count: { tasks: 0 },
-                }}
+                project={project}
               />
             ))}
           </div>
