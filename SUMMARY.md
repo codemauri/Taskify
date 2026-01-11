@@ -24,6 +24,7 @@ This document summarizes the security vulnerabilities identified in Taskify and 
 ---
 
 ## Executive Summary
+[↑ Back to TOC](#table-of-contents)
 
 Three critical security vulnerabilities were identified and remediated in the Taskify application:
 
@@ -36,6 +37,7 @@ Three critical security vulnerabilities were identified and remediated in the Ta
 ---
 
 ## Vulnerability 1: SQL Injection
+[↑ Back to TOC](#table-of-contents)
 
 ### Original Vulnerability
 
@@ -96,6 +98,7 @@ export async function searchProjects(userId: string, searchQuery: string): Promi
 ---
 
 ## Vulnerability 2: Cross-Site Scripting (XSS)
+[↑ Back to TOC](#table-of-contents)
 
 ### Original Vulnerability
 
@@ -144,6 +147,7 @@ React automatically escapes HTML entities, rendering them as harmless text.
 ---
 
 ## Vulnerability 3: Broken Access Control / IDOR
+[↑ Back to TOC](#table-of-contents)
 
 ### Original Vulnerability
 
@@ -263,6 +267,7 @@ if (!project) {
 ---
 
 ## Files Modified
+[↑ Back to TOC](#table-of-contents)
 
 | File                            | Changes                                                                         |
 |---------------------------------|---------------------------------------------------------------------------------|
@@ -277,6 +282,7 @@ if (!project) {
 ---
 
 ## Verification Steps
+[↑ Back to TOC](#table-of-contents)
 
 ### SQL Injection (Fixed)
 1. Login and navigate to project search
@@ -297,6 +303,7 @@ if (!project) {
 ---
 
 ## OWASP Alignment
+[↑ Back to TOC](#table-of-contents)
 
 All fixes align with OWASP recommendations:
 
@@ -309,6 +316,7 @@ All fixes align with OWASP recommendations:
 ---
 
 ## Conclusion
+[↑ Back to TOC](#table-of-contents)
 
 All three critical vulnerabilities have been successfully remediated following OWASP best practices. The application now:
 
