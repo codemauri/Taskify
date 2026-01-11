@@ -4,6 +4,25 @@ This document summarizes the security vulnerabilities identified in Taskify and 
 
 ---
 
+## Table of Contents
+
+1. [Executive Summary](#executive-summary)
+2. [Vulnerability 1: SQL Injection](#vulnerability-1-sql-injection)
+   - [Original Vulnerability](#original-vulnerability)
+   - [Fix Implemented](#fix-implemented)
+3. [Vulnerability 2: Cross-Site Scripting (XSS)](#vulnerability-2-cross-site-scripting-xss)
+   - [Original Vulnerability](#original-vulnerability-1)
+   - [Fix Implemented](#fix-implemented-1)
+4. [Vulnerability 3: Broken Access Control / IDOR](#vulnerability-3-broken-access-control--idor)
+   - [Original Vulnerability](#original-vulnerability-2)
+   - [Fix Implemented](#fix-implemented-2)
+5. [Files Modified](#files-modified)
+6. [Verification Steps](#verification-steps)
+7. [OWASP Alignment](#owasp-alignment)
+8. [Conclusion](#conclusion)
+
+---
+
 ## Executive Summary
 
 Three critical security vulnerabilities were identified and remediated in the Taskify application:
