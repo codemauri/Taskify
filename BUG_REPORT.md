@@ -30,13 +30,13 @@ This document catalogs known bugs and improvement opportunities identified in th
 ## Summary
 [↑ Back to TOC](#table-of-contents)
 
-| Category                  | Count | Fixed | Open |
-|---------------------------|-------|-------|------|
-| Bugs (UI-triggerable)     | 5     | 5     | 0    |
-| Defensive Coding          | 4     | 0     | 4    |
-| Future Compatibility      | 1     | 0     | 1    |
-| Improvements              | 31    | 0     | 31   |
-| **Total**                 | **41**| **5** | **36**|
+| Category              | Count  | Fixed | Open   |
+|-----------------------|--------|-------|--------|
+| Bugs (UI-triggerable) | 5      | 5     | 0      |
+| Defensive Coding      | 4      | 0     | 4      |
+| Future Compatibility  | 1      | 0     | 1      |
+| Improvements          | 31     | 0     | 31     |
+| **Total**             | **41** | **5** | **36** |
 
 ---
 
@@ -44,6 +44,7 @@ This document catalogs known bugs and improvement opportunities identified in th
 [↑ Back to TOC](#table-of-contents)
 
 ### [FIXED] BUG-001: XSS Vulnerability in Project Card Component
+[↑ Back to TOC](#table-of-contents)
 
 | Field        | Value                         |
 |--------------|-------------------------------|
@@ -59,6 +60,7 @@ This document catalogs known bugs and improvement opportunities identified in th
 ---
 
 ### [FIXED] BUG-002: Missing Cascade Delete on Project→Task Relationship
+[↑ Back to TOC](#table-of-contents)
 
 | Field        | Value                  |
 |--------------|------------------------|
@@ -74,6 +76,7 @@ This document catalogs known bugs and improvement opportunities identified in th
 ---
 
 ### [FIXED] BUG-003: Incorrect Task Count in Search Results
+[↑ Back to TOC](#table-of-contents)
 
 | Field        | Value                                              |
 |--------------|----------------------------------------------------|
@@ -91,6 +94,7 @@ This document catalogs known bugs and improvement opportunities identified in th
 ---
 
 ### [FIXED] BUG-004: Misleading Empty State Message When Filtering
+[↑ Back to TOC](#table-of-contents)
 
 | Field        | Value                      |
 |--------------|----------------------------|
@@ -106,6 +110,7 @@ This document catalogs known bugs and improvement opportunities identified in th
 ---
 
 ### [FIXED] BUG-005: Callback URL Not Used After Sign-In
+[↑ Back to TOC](#table-of-contents)
 
 | Field        | Value                  |
 |--------------|------------------------|
@@ -130,6 +135,7 @@ This document catalogs known bugs and improvement opportunities identified in th
 ---
 
 ### DEF-001: Missing Status ID Validation
+[↑ Back to TOC](#table-of-contents)
 
 | Field     | Value            |
 |-----------|------------------|
@@ -145,11 +151,12 @@ This document catalogs known bugs and improvement opportunities identified in th
 ---
 
 ### DEF-002: Silent Constraint Violation on Task Update
+[↑ Back to TOC](#table-of-contents)
 
-| Field     | Value              |
-|-----------|--------------------|
-| **File**  | `lib/services.ts`  |
-| **Lines** | 195-224            |
+| Field     | Value             |
+|-----------|-------------------|
+| **File**  | `lib/services.ts` |
+| **Lines** | 195-224           |
 
 **Description:** Invalid statusId on task update causes unclear error message.
 
@@ -158,9 +165,10 @@ This document catalogs known bugs and improvement opportunities identified in th
 ---
 
 ### DEF-003: Unsafe Type Casting for Errors
+[↑ Back to TOC](#table-of-contents)
 
-| Field     | Value                                      |
-|-----------|--------------------------------------------|
+| Field     | Value                                        |
+|-----------|----------------------------------------------|
 | **Files** | `sign-in/page.tsx:50`, `sign-up/page.tsx:47` |
 
 **Description:** Type assertion without proper type guard for error objects.
@@ -170,11 +178,12 @@ This document catalogs known bugs and improvement opportunities identified in th
 ---
 
 ### DEF-004: Unhandled Promise Rejection in useEffect
+[↑ Back to TOC](#table-of-contents)
 
-| Field     | Value                            |
-|-----------|----------------------------------|
-| **File**  | `components/edit-task-dialog.tsx`|
-| **Lines** | 37-39                            |
+| Field     | Value                             |
+|-----------|-----------------------------------|
+| **File**  | `components/edit-task-dialog.tsx` |
+| **Lines** | 37-39                             |
 
 **Description:** Task status fetch has no error handling.
 
@@ -186,6 +195,7 @@ This document catalogs known bugs and improvement opportunities identified in th
 [↑ Back to TOC](#table-of-contents)
 
 ### FUT-001: Deprecated Event Handler
+[↑ Back to TOC](#table-of-contents)
 
 | Field    | Value                           |
 |----------|---------------------------------|
@@ -206,6 +216,7 @@ This document catalogs known bugs and improvement opportunities identified in th
 *These are enhancements that would improve UX, performance, or code quality but are not bugs.*
 
 ### Error Handling & User Feedback
+[↑ Back to TOC](#table-of-contents)
 
 | ID      | Description                                   | File(s)                              |
 |---------|-----------------------------------------------|--------------------------------------|
@@ -218,6 +229,7 @@ This document catalogs known bugs and improvement opportunities identified in th
 | IMP-007 | Generic error message in search               | `project-search.tsx`                 |
 
 ### UX Improvements
+[↑ Back to TOC](#table-of-contents)
 
 | ID      | Description                              | File(s)                                           |
 |---------|------------------------------------------|---------------------------------------------------|
@@ -230,24 +242,27 @@ This document catalogs known bugs and improvement opportunities identified in th
 | IMP-014 | Dialog state issues on page navigation   | Dialog components                                 |
 
 ### Performance & Scalability
+[↑ Back to TOC](#table-of-contents)
 
-| ID      | Description                             | File(s)                         |
-|---------|-----------------------------------------|---------------------------------|
-| IMP-015 | Race condition in project search        | `project-search.tsx`            |
-| IMP-016 | Race condition in concurrent delete     | `lib/services.ts`               |
-| IMP-017 | Missing database indexes                | `prisma/schema.prisma`          |
-| IMP-018 | No pagination for tasks                 | `lib/services.ts`               |
+| ID      | Description                             | File(s)                           |
+|---------|-----------------------------------------|-----------------------------------|
+| IMP-015 | Race condition in project search        | `project-search.tsx`              |
+| IMP-016 | Race condition in concurrent delete     | `lib/services.ts`                 |
+| IMP-017 | Missing database indexes                | `prisma/schema.prisma`            |
+| IMP-018 | No pagination for tasks                 | `lib/services.ts`                 |
 | IMP-019 | Missing environment variable validation | `lib/auth-client.ts`, `lib/db.ts` |
 
 ### Accessibility
+[↑ Back to TOC](#table-of-contents)
 
-| ID      | Description                      | File(s)                                           |
-|---------|----------------------------------|---------------------------------------------------|
-| IMP-020 | Missing ARIA labels              | `header.tsx`, `task-list.tsx`, `project-card.tsx` |
-| IMP-021 | Missing focus indicators         | `header.tsx`                                      |
-| IMP-022 | Missing form label associations  | Dialog components                                 |
+| ID      | Description                     | File(s)                                           |
+|---------|---------------------------------|---------------------------------------------------|
+| IMP-020 | Missing ARIA labels             | `header.tsx`, `task-list.tsx`, `project-card.tsx` |
+| IMP-021 | Missing focus indicators        | `header.tsx`                                      |
+| IMP-022 | Missing form label associations | Dialog components                                 |
 
 ### Validation & Security
+[↑ Back to TOC](#table-of-contents)
 
 | ID      | Description                       | File(s)            |
 |---------|-----------------------------------|--------------------|
@@ -256,19 +271,21 @@ This document catalogs known bugs and improvement opportunities identified in th
 | IMP-025 | Hardcoded demo credentials        | `prisma/seed.ts`   |
 
 ### Code Quality
+[↑ Back to TOC](#table-of-contents)
 
-| ID      | Description                         | File(s)                            |
-|---------|-------------------------------------|------------------------------------|
-| IMP-026 | Inefficient date handling           | `lib/services.ts`                  |
+| ID      | Description                         | File(s)                                |
+|---------|-------------------------------------|----------------------------------------|
+| IMP-026 | Inefficient date handling           | `lib/services.ts`                      |
 | IMP-027 | Empty className attributes          | `sign-in/page.tsx`, `sign-up/page.tsx` |
-| IMP-028 | Inconsistent error handling pattern | Auth pages                         |
+| IMP-028 | Inconsistent error handling pattern | Auth pages                             |
 
 ### Responsive Design & SEO
+[↑ Back to TOC](#table-of-contents)
 
-| ID      | Description                  | File(s)              |
-|---------|------------------------------|----------------------|
-| IMP-029 | Fixed width not responsive   | `project-search.tsx` |
-| IMP-030 | Missing meta tags for SEO    | `app/layout.tsx`     |
+| ID      | Description                | File(s)              |
+|---------|----------------------------|----------------------|
+| IMP-029 | Fixed width not responsive | `project-search.tsx` |
+| IMP-030 | Missing meta tags for SEO  | `app/layout.tsx`     |
 
 ---
 
